@@ -83,8 +83,14 @@ function update(M::ItterMix,x,comp::Int)
     if !bool(isnew)
         post_pred = {MvTDist(float(G.nu-M.d+1),G.mu,G.sigma*((G.kappa+1)/(G.kappa*(G.nu-M.d-1)))) for G in M.components};
         # Calculate and normalize cluster responsibilities
-        resp = {M.phi[i]*pdf(post_pred[i],x) for i=1:length(post_pred)};
-        winner = indmax(resp)
+        resp = [M.phi[i]*pdf(post_pred[i],x) for i=1:length(post_pred)];
+        resp = float(resp/sum(resp));
+        if comp == 1
+            winner = indmax(resp);
+        else
+            winner = indmax(rand(Multinomial(1,resp)));
+        end
+        
         update(M.components[winner],x);
         M.alpha[winner] += 1;
     else
@@ -108,4 +114,3 @@ function update(M::ItterMix,x,comp::Int)
     M.phi = {M.alpha[i]/sum(M.alpha) for i=1:length(M.alpha)};
     mean_sigma = mean({G.sigma/(G.nu-M.d-1) for G in M.components});
 end
-
