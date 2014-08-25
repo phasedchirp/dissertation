@@ -3,16 +3,27 @@
 
 # Category means for adult women
 # Dims are duration, F0, F1, F2, F3, F4 (formants measured at midpoint)
+# /i/
 iy_mu = [306.83; 14.32; 21.43; 47.68; 50.81; 54.84];
+# /e/
 ei_mu = [320.94; 14.00; 23.91; 46.28; 49.23; 54.70];
+# /ae/
 ae_mu = [334.19; 13.77; 26.94; 45.05; 48.82; 54.71];
+# /U/ (horseshoe)
 oo_mu = [249.27; 14.44; 23.54; 35.30; 48.05; 53.77];
+# /u/
 uw_mu = [303.83; 14.67; 22.04; 33.65; 47.53; 53.96];
+# /a/
 ah_mu = [324.33; 13.68; 31.18; 38.55; 48.06; 54.62];
+# // (open o)
 aw_mu = [350.52; 13.76; 29.31; 34.83; 48.01; 53.31];
+# /E/ (epsilon)
 eh_mu = [251.60; 13.72; 27.93; 43.14; 48.72; 54.69];
+# /I/ (small-cap i)
 ih_mu = [241.40; 14.22; 22.69; 45.28; 49.27; 54.80];
+# /o/
 oa_mu = [326.69; 13.91; 24.33; 32.82; 48.04; 53.24];
+# // (wedge or schwa)
 uh_mu = [236.52; 13.95; 28.55; 37.43; 48.44; 54.04];
 
 # category covariances for adult women
@@ -94,28 +105,28 @@ uh_sigma = [2338.255 -3.534 -0.241 9.866 1.159 10.464;
 1.159  0.130  0.370 0.429 0.895  0.156;
 10.464  0.205  0.242 0.449 0.156  1.082];
 
-var_scaling = 0.3
 
-iy_sample = cat(1,rand(MvNormal(iy_mu,iy_sigma*var_scaling),500),zeros(1,500));
-ei_sample = cat(1,rand(MvNormal(ei_mu,ei_sigma*var_scaling),500),ones(1,500));
-ae_sample = cat(1,rand(MvNormal(ae_mu,ae_sigma*var_scaling),500),ones(1,500)*2);
-oo_sample = cat(1,rand(MvNormal(oo_mu,oo_sigma*var_scaling),500),ones(1,500)*3);
-uw_sample = cat(1,rand(MvNormal(uw_mu,uw_sigma*var_scaling),500),ones(1,500)*4);
-ah_sample = cat(1,rand(MvNormal(ah_mu,ah_sigma*var_scaling),500),ones(1,500)*5);
-aw_sample = cat(1,rand(MvNormal(aw_mu,aw_sigma*var_scaling),500),ones(1,500)*6);
-eh_sample = cat(1,rand(MvNormal(eh_mu,eh_sigma*var_scaling),500),ones(1,500)*7);
-ih_sample = cat(1,rand(MvNormal(ih_mu,ih_sigma*var_scaling),500),ones(1,500)*8);
-oa_sample = cat(1,rand(MvNormal(oa_mu,oa_sigma*var_scaling),500),ones(1,500)*9);
-uh_sample = cat(1,rand(MvNormal(uh_mu,uh_sigma*var_scaling),500),ones(1,500)*10);
 
-sample_all = cat(2,iy_sample,ei_sample,ae_sample,oo_sample,uw_sample,ah_sample,aw_sample,
-eh_sample,ih_sample,oa_sample,uh_sample);
-ord = randperm(size(sample_all,2));
-col1 = permute!(sample_all[1,:],ord);
-col2 = permute!(sample_all[2,:],ord);
-col3 = permute!(sample_all[3,:],ord);
-col4 = permute!(sample_all[4,:],ord);
-col5 = permute!(sample_all[5,:],ord);
-col6 = permute!(sample_all[6,:],ord);
-col7 = permute!(sample_all[7,:],ord);
-vowels_rand = cat(1,col1,col2,col3,col4,col5,col6,col7);
+#iy_sample = cat(1,rand(MvNormal(iy_mu,iy_sigma*var_scaling),500),zeros(1,500));
+#ei_sample = cat(1,rand(MvNormal(ei_mu,ei_sigma*var_scaling),500),ones(1,500));
+#ae_sample = cat(1,rand(MvNormal(ae_mu,ae_sigma*var_scaling),500),ones(1,500)*2);
+#oo_sample = cat(1,rand(MvNormal(oo_mu,oo_sigma*var_scaling),500),ones(1,500)*3);
+#uw_sample = cat(1,rand(MvNormal(uw_mu,uw_sigma*var_scaling),500),ones(1,500)*4);
+#ah_sample = cat(1,rand(MvNormal(ah_mu,ah_sigma*var_scaling),500),ones(1,500)*5);
+#aw_sample = cat(1,rand(MvNormal(aw_mu,aw_sigma*var_scaling),500),ones(1,500)*6);
+#eh_sample = cat(1,rand(MvNormal(eh_mu,eh_sigma*var_scaling),500),ones(1,500)*7);
+#ih_sample = cat(1,rand(MvNormal(ih_mu,ih_sigma*var_scaling),500),ones(1,500)*8);
+#oa_sample = cat(1,rand(MvNormal(oa_mu,oa_sigma*var_scaling),500),ones(1,500)*9);
+#uh_sample = cat(1,rand(MvNormal(uh_mu,uh_sigma*var_scaling),500),ones(1,500)*10);
+
+#sample_all = cat(2,iy_sample,ei_sample,ae_sample,oo_sample,uw_sample,ah_sample,aw_sample,
+#eh_sample,ih_sample,oa_sample,uh_sample);
+#ord = randperm(size(sample_all,2));
+#col1 = permute!(sample_all[1,:],ord);
+#col2 = permute!(sample_all[2,:],ord);
+#col3 = permute!(sample_all[3,:],ord);
+#col4 = permute!(sample_all[4,:],ord);
+#col5 = permute!(sample_all[5,:],ord);
+#col6 = permute!(sample_all[6,:],ord);
+#col7 = permute!(sample_all[7,:],ord);
+#vowels_rand = cat(1,col1,col2,col3,col4,col5,col6,col7);

@@ -23,6 +23,18 @@ type ItterMix
     mean_sigma
 end
 
+# another utility function:
+function component_means(M::ItterMix,threshold = 0.01)
+    j = 1
+    for i=1:length(M.components)
+        if M.phi[i]>threshold
+            print(j,' ', M.components[i].mu)
+            print('\n')
+            j+=1
+        end
+    end
+end
+
 # Component update
 function update(G::GaussND,x,weight = 1)
     G.sigma += weight*((x-G.mu)*transpose(x-G.mu))*G.kappa/(G.kappa+1);
@@ -114,3 +126,18 @@ function update(M::ItterMix,x,comp::Int)
     M.phi = {M.alpha[i]/sum(M.alpha) for i=1:length(M.alpha)};
     mean_sigma = mean({G.sigma/(G.nu-M.d-1) for G in M.components});
 end
+
+function sample(G::GaussND)
+    sigma = rand(InverseWishart(G.sigma,G.nu));
+    #return rand(NormalInverseWishart(G.mu,G.kappa,G.sigma,G.nu))
+end
+
+function sample(M::ItterMix,n)
+    out = Array(Float64,M.d+1,n)
+    for i=1:n
+        cat_i = indmax(rand(Multinomial(1,float(M.phi))));
+        out[:,i] = vcat(sample(M.components[cat_i]),cat_i)
+    end
+    return out
+end
+    
