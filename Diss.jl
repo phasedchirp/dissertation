@@ -21,6 +21,7 @@ type ItterMix
     phi
     components
     mean_sigma
+    ms_nu
 end
 
 # another utility function:
@@ -129,7 +130,8 @@ end
 
 function sample(G::GaussND)
     sigma = rand(InverseWishart(G.sigma,G.nu));
-    #return rand(NormalInverseWishart(G.mu,G.kappa,G.sigma,G.nu))
+    mu = rand(MvNormal(G.mu,(G.sigma/G.kappa)))
+    return rand(MvNormal(mu,sigma))
 end
 
 function sample(M::ItterMix,n)
