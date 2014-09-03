@@ -128,17 +128,21 @@ function update(M::ItterMix,x,comp::Int)
     mean_sigma = mean({G.sigma/(G.nu-M.d-1) for G in M.components});
 end
 
-function sample(G::GaussND)
-    sigma = rand(InverseWishart(G.sigma,G.nu));
-    mu = rand(MvNormal(G.mu,(G.sigma/G.kappa)))
-    return rand(MvNormal(mu,sigma))
+function sample(G::GaussND,s_type ="posterior")
+    if s_type == "posterior"
+        sigma = rand(InverseWishart(G.nu,G.sigma));
+        mu = rand(MvNormal(G.mu,(G.sigma/G.kappa)));
+        return rand(MvNormal(mu,sigma))
+    else
+        return rand(MvNormal(G.mu,getsigma(G)))
+    end
 end
 
-function sample(M::ItterMix,n)
+function sample(M::ItterMix,n,s_type ="posterior")
     out = Array(Float64,M.d+1,n)
     for i=1:n
         cat_i = indmax(rand(Multinomial(1,float(M.phi))));
-        out[:,i] = vcat(sample(M.components[cat_i]),cat_i)
+        out[:,i] = vcat(sample(M.components[cat_i],s_type),cat_i)
     end
     return out
 end
