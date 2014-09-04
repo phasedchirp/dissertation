@@ -1,3 +1,7 @@
+using Distributions
+using PyPlot
+using KernelDensity
+
 # Mixture component
 type GaussND
     d
@@ -103,8 +107,11 @@ function update(M::ItterMix,x,comp::Int)
         else
             winner = indmax(rand(Multinomial(1,resp)));
         end
-        
+        mu_temp = M.components[winner].mu
+        kappa_temp = M.components[winner].kappa
         update(M.components[winner],x);
+        mean_sigma += ((x-mu_temp)*transpose(x-mu_temp))*kappa_temp/(kappa_temp+1);
+        ms_nu += 1
         M.alpha[winner] += 1;
     else
         w_new = rand(Beta(1,M.a))*M.stick;
@@ -138,12 +145,37 @@ function sample(G::GaussND,s_type ="posterior")
     end
 end
 
-function sample(M::ItterMix,n,s_type ="posterior")
-    out = Array(Float64,M.d+1,n)
-    for i=1:n
-        cat_i = indmax(rand(Multinomial(1,float(M.phi))));
-        out[:,i] = vcat(sample(M.components[cat_i],s_type),cat_i)
+function sample(M::ItterMix,n,s_type ="posterior",threshold="none")
+    if threshold == "none"
+        out = Array(Float64,M.d+1,n)
+        for i=1:n
+            cat_i = indmax(rand(Multinomial(1,float(M.phi))));
+            out[:,i] = vcat(sample(M.components[cat_i],s_type),cat_i)
+        end
+        return out
+    else
+        #threshold::Float64;
+        temp_mix = ItterMix(M.d,M.a,M.stick,{},{},{},M.mean_sigma,M.ms_nu)
+        for i=1:length(M.phi)
+            if M.phi[i]>threshold
+                temp_mix.phi = cat(1,{M.phi[i]})
+                temp_mix.alpha = cat(1,{M.alpha[i]})
+                temp_mix.components = cat(1,{M.components[i]})
+            end
+            temp_mix.phi = temp_mix.phi/sum(temp_mix.phi)
+        end
+        out = Array(Float64,M.d+1,n)
+        for i=1:n
+            cat_i = indmax(rand(Multinomial(1,float(temp_mix.phi))));
+            out[:,i] = vcat(sample(temp_mix.components[cat_i],s_type),cat_i)
+        end
+        return out
     end
-    return out
+end
+
+
+function contourplot(M::ItterMix,dims::Array{Int},s_type="posterior")
+    points = sample(M,5000,s_type)
+    contour(kde(points[dims,:]'))
 end
     
