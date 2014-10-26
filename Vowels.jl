@@ -104,7 +104,7 @@ uh_sigma = [2338.  -98  -21   907   226  2539;
             226  619 3730  6978 29810  7626;
             2539 1340 3679 11463  7626 80296];
 
-var_scaling = 0.1
+var_scaling = 0.7
 
 iy_sample = cat(1,rand(MvNormal(iy_mu,iy_sigma*var_scaling),500),zeros(1,500));
 ei_sample = cat(1,rand(MvNormal(ei_mu,ei_sigma*var_scaling),500),ones(1,500));

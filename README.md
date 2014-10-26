@@ -1,7 +1,7 @@
-dissertation
+Dissertation
 ============
 
-Dissertation-related category learning modeling
+Dissertation-related category learning models. Mostly written in [Julia](julialang.org).
 
 Most of this is semi-functional now. 
 
@@ -9,13 +9,16 @@ If you see egregious math errors (ignoring my terrible assumptions about probabi
 
 If you have suggestions for alternatives to my terrible assumptions about probability distributions, that'd be pretty cool too.
 
-#### Working:
+## Files currently in use:
 
-* update function for components
-* update functions for mixtures:
-  - Competitive update, updating only the most probable component
+* `Diss.jl`: Biased Category Learner code. This currently needs to be cleaned up a bit.
+* `GAmod.jl`: Gradient-based category learner based on OME as described in Vallabha et al. (2007) used for comparisons.
+* `cluster_metrics.jl`: some code for testing clustering output. So far just F1-score.
+* `vowels2.jl`: parameters for generating simulated vowel data for simulations (ERB-scaled).
+* `BCL_simulations.ipynb`: Biased category learning simulations.
+* `OME_simulations.ipynb`: Gradient learner simulations for comparisons.
 
-#### Not working:
+## Files no longer in use or out of date:
 
-* update functions for mixtures:
-  - Update all categories weighted by posterior probability
+* `model_main.ipynb`: description of the model, somewhat outdated but will fix at some point.
+* `Vowels.jl`: hertz-scaled vowel parameters (not using currently)

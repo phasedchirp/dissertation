@@ -49,5 +49,30 @@ function update(M::GAMix,x,rate)
     end
     winner = indmax(resp)
     M.phi[winner] += rate
+    prune = M.phi .> 0.0005;
+    M.components = M.components[prune];
+    M.phi = M.phi[prune];
     M.phi = M.phi/sum(M.phi)
+end
+
+
+function train(M::GAMix,data,nitter,permute=false)
+    for i=1:nitter
+        update(M,data[:,i],2);
+    end
+end
+
+
+#-----------------------------------------------------------------------------------------------------
+# classification of new data:
+function categorize(M::GAMix,data)
+    labels = Array(Float64,size(data,2),1);
+    for i=1:size(data,2)
+        x = data[:,i];
+        p_r = {MvNormal(G.mu,G.sigma) for G in M.components};
+        resp = [M.phi[i]*pdf(p_r[i],x) for i=1:length(p_r)]
+        resp = resp/sum(resp)
+        labels[i] = indmax(resp);
+    end
+    return labels
 end
