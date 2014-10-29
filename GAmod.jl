@@ -56,11 +56,6 @@ function update(M::GAMix,x,rate)
 end
 
 
-function train(M::GAMix,data,nitter,permute=false)
-    for i=1:nitter
-        update(M,data[:,i],2);
-    end
-end
 
 
 #-----------------------------------------------------------------------------------------------------
