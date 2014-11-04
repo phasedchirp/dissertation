@@ -127,6 +127,27 @@ end
 #-----------------------------------------------------------------------------------------------------
 # regularized version:
 
+
+
+#-----------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------
+# This needs work
+print("Haven't fixed things yet?")
+#Component update with regularized Sigma
+# function update(G::GaussND,x,Sigma,nu)
+#     conf = [G.nu; nu];
+#     #conf = [7;3];
+#     conf = conf/sum(conf);
+#     G.sigma = G.sigma + (((x-G.mu)*transpose(x-G.mu)))*G.kappa/(G.kappa+1)
+#     G.sigma = G.sigma*conf[1] + Sigma*conf[2];
+#     G.mu = G.mu*(G.kappa/(G.kappa+1)) + x*(1/(G.kappa+1));
+#     G.kappa += 1;
+#     G.nu += 1;
+# end
+
+
 #Component update with regularized Sigma
 function update(G::GaussND,x,Sigma,nu)
     conf = [G.nu; nu];
@@ -137,10 +158,12 @@ function update(G::GaussND,x,Sigma,nu)
     G.kappa += 1;
     G.nu += 1;
 end
-
+#-----------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------
 
 # Mixture update with regularized Sigma
-function update(M::ItterMix,x,comp::Int,reg::Int)
+function update(M::ItterMix,x,comp::Int,reg::Bool)
     # determine if new or old category
     # p(new) decreases as stick-length decreases
     isnew = rand(Bernoulli(M.stick));
@@ -162,8 +185,8 @@ function update(M::ItterMix,x,comp::Int,reg::Int)
         mu_temp = M.components[winner].mu
         kappa_temp = M.components[winner].kappa
         # Not working as it's supposed to
-        update(M.components[winner],x,M.mean_sigma/(M.ms_nu-M.d-1),nu_temp);
-        M.mean_sigma += ((x-mu_temp)*transpose(x-mu_temp))*kappa_temp/(kappa_temp+1);
+        ms_update += ((x-mu_temp)*transpose(x-mu_temp))*kappa_temp/(kappa_temp+1);
+        update(M.components[winner],x,ms_update,nu_temp);
         M.ms_nu += 1
         M.alpha[winner] += 1;
     else
