@@ -3,6 +3,8 @@ Dissertation
 
 Dissertation-related category learning models. Mostly written in [Julia](julialang.org).
 
+*This is all a bit out of date*
+
 Most of this is semi-functional now. 
 
 If you see egregious math errors (ignoring my terrible assumptions about probability distributions) feel free to point them out.
