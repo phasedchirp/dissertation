@@ -1,31 +1,31 @@
 Dissertation
 ============
 
-Dissertation-related category learning models. Mostly written in [Julia](julialang.org) (tested w/ version 0.4.0-dev+1426, although there may be some warnings about deprecated array syntax).
+Dissertation-related category learning models. Mostly written in [Julia](julialang.org) (tested w/ version 0.4.0-dev+5011 (commit 4d9bc85), although there will be a warnings about deprecated syntax).
 
-*last updated 1/30/2015*
+*last updated 7/1/2015*
 
-In the process of major revisions.
+This represents the version of model and simulation code used in my defense draft.
 
-* Documentation currently lacking. Will re-add in the near future.
+* For an explanation of how the model is meant to work, contact me for a copy of the relevant chapters (will add proper documentation at some point).
 
-If you see egregious math errors (ignoring my terrible assumptions about probability distributions) feel free to point them out.
+If you see egregious math or coding errors feel free to point them out.
 
-If you have suggestions for alternatives to my terrible assumptions about probability distributions, that'd be pretty cool too.
+If you have suggestions for alternatives to some of the implementation, that'd be pretty cool too.
 
 ## Files currently in use:
 
 * `diss.jl`: Biased Category Learner code.
-* `GAmod.jl`: Gradient-based category learner based on OME as described in Vallabha et al. (2007) used for comparisons.
-* `cluster_metrics.jl`: some code for testing clustering output. So far just F1-score.
-* `vowels2.jl`: parameters/sampling functions for generating simulated vowel data for simulations (ERB-scaled).
-* `sim.jl`: some testing code. Set up to be run interactively rather than as a script so no output files.
-* `BCL_simulations.ipynb`: Biased category learning simulations (a bit out of date).
-* `OME_simulations.ipynb`: Gradient learner simulations for comparisons (a bit out of date).
+* `GAmod.jl`: Gradient-based category learner based on OME as described in Vallabha et al. (2007), used for comparisons.
+* `cluster_metrics.jl`: some code for testing clustering output. Functions for computing F1-score, precision, and recall.
+* `vowels2.jl`: parameters/sampling functions for generating simulated vowel data (ERB-scaled).
+* `sim1-jl`: code for simulation 1 comparing performance of models with 2-, 3-, 4-, and 5- dimensional input data.
+* `sim2-jl`: code for simulation 2 attempting to simulate experimental results
+* `sim3-jl`: code for simulation 3 simulating L2 learning.
+* `*_stims.csv`: experimental stimuli for simulation 2 (where * is one of `bal`, `F2`, or `F0`)
+* `*_test.csv`: testing stimuli for simulation 2 (where * is one of `bal`, `F2`, or `F0`)
+
 
 ## Files no longer in use or out of date:
 
-* `Simulations_1.ipynb`: set of simulations testing learning with variable number of dimensions.
-* `Simulations_2.ipynb`: set of simulations testing learning with variable within-category variances.
-* `Simulations_3.ipynb`: set of simulations testing learning with variable number of categories.
 * `Vowels.jl`: hertz-scaled vowel parameters (not using currently)

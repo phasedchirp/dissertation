@@ -132,3 +132,95 @@ function sample_all(N,var_scaling)
     vowels_rand = cat(1,col1,col2,col3,col4,col5,col6,col7)
     return vowels_rand;
 end
+
+
+
+
+
+
+#-------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------------
+
+# Simulating 5-category vowel data adapted from  Hillenbrand et al., 1995
+# F0-4 are ERB-scaled.
+
+# Category means for adult women
+# Dims are duration, F0, F1, F2, F3, F4 (formants measured at midpoint)
+# /i/
+i_mu = [128; 14.32; 21.43; 47.68; 50.81; 54.84];
+# /e/
+ae2_mu = [145; 13.77; 26.94; 45.05; 48.82; 54.71];
+# /U/ (horseshoe)
+u_mu = [127; 14.67; 22.04; 33.65; 47.53; 53.96];
+# /a/
+a_mu = [159; 13.68; 31.18; 38.55; 48.06; 54.62];
+# // (open o)
+o_mu = [136; 13.91; 25.87; 32.82; 48.04; 53.24];
+
+
+
+# category covariances for adult women
+
+i_sigma = [2097.844 -9.659 -10.636 -7.715 1.434 -7.506;
+-9.659  1.101   0.946  0.201 0.152  0.387;
+-10.636  0.946   1.284  0.184 0.102  0.083;
+-7.715  0.201   0.184  0.711 0.483  0.492;
+1.434  0.152   0.102  0.483 1.242  0.921;
+-7.506  0.387   0.083  0.492 0.921  2.159];
+
+
+ae2_sigma = [2505.432 -9.955  6.815 -12.056  1.993 25.164;
+-9.955  0.843 -0.025   0.243  0.300  0.094;
+6.815 -0.025  1.773  -0.564 -0.128  0.424;
+-12.056  0.243 -0.564   1.123  0.712  0.148;
+1.993  0.300 -0.128   0.712  1.085  0.540;
+25.164  0.094  0.424   0.148  0.540  1.711];
+
+
+u_sigma = [2895.972 -17.239 -19.584 67.988 -3.967 3.212;
+-17.239   1.130   1.025 -0.357 -0.006 0.108;
+-19.584   1.025   1.106 -0.106 -0.018 0.110;
+67.988  -0.357  -0.106  6.441  0.193 0.531;
+-3.967  -0.006  -0.018  0.193  0.644 0.520;
+3.212   0.108   0.110  0.531  0.520 1.637];
+
+a_sigma = [2587.078 -10.401 -9.371 -6.464  6.785 -17.926;
+-10.401   0.983  0.196  0.567 -0.034  -0.252;
+-9.371   0.196  2.159  0.644  0.253   0.510;
+-6.464   0.567  0.644  1.537  0.029  -0.097;
+6.785  -0.034  0.253  0.029  0.938  -0.142;
+-17.926  -0.252  0.510 -0.097 -0.142   1.982];
+
+
+o_sigma = [2391.922 -11.975 -4.999 6.686 -8.107 1.896;
+-11.975   0.930  0.147 0.160  0.103 0.152;
+-4.999   0.147  3.564 2.299  0.030 0.146;
+6.686   0.160  2.299 2.875  0.057 0.325;
+-8.107   0.103  0.030 0.057  1.097 0.331;
+1.896   0.152  0.146 0.325  0.331 0.789];
+
+
+
+
+
+
+function sample_5(N,var_scaling)
+    i_sample = cat(1,rand(MvNormal(i_mu,i_sigma*var_scaling),N),zeros(1,N));
+    ae2_sample = cat(1,rand(MvNormal(ae2_mu,ae2_sigma*var_scaling),N),ones(1,N)*2);
+    u_sample = cat(1,rand(MvNormal(u_mu,u_sigma*var_scaling),N),ones(1,N)*4);
+    a_sample = cat(1,rand(MvNormal(a_mu,a_sigma*var_scaling),N),ones(1,N)*5);
+    o_sample = cat(1,rand(MvNormal(o_mu,o_sigma*var_scaling),N),ones(1,N)*9);
+    vowel_sample = cat(2,i_sample,ae2_sample,o_sample,u_sample,a_sample);
+    ord = randperm(size(vowel_sample,2));
+    col1 = permute!(vowel_sample[1,:],ord);
+    col2 = permute!(vowel_sample[2,:],ord);
+    col3 = permute!(vowel_sample[3,:],ord);
+    col4 = permute!(vowel_sample[4,:],ord);
+    col5 = permute!(vowel_sample[5,:],ord);
+    col6 = permute!(vowel_sample[6,:],ord);
+    col7 = permute!(vowel_sample[7,:],ord);
+    vowels_rand = cat(1,col1,col2,col3,col4,col7)
+    return vowels_rand;
+end
